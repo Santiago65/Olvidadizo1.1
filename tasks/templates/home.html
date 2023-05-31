@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container py-5">
+    <section class="card card-body">
+        <h1 class="display-1 text-center">Bienvenido a Olvidadizo!!</h1>
+        <br><br>
+        <div class="d-flex justify-content-around h-100">
+            <div class="d-flex flex-column align-items-center">
+                 <i class="fa-solid fa-notebook"></i>
+                <img src="/static/imagenes/notebook.png" height="100" width="100" alt="Foto Notebook">
+                <a href="/tasks/create/" class="btn btn-primary">Crear Tarea</a>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <!-- <i class="fa-solid fa-cake-candles"></i> -->
+                <img src="/static/imagenes/pastel.png" height="100" width="100" alt="Foto Pastel">
+                <a href="#" class="btn btn-primary">Agregar Cumpleaños</a>
+            </div>
+        </div>
+<br>
+<br>
+<br>
+<br>
+   <div class="text-center">
+    <a class="btn btn-secondary" href="/signin/">
+        Iniciar sesión
+    </a>
+    <a class="btn btn-dark" href="/signup/">
+        Registrarse
+    </a>
+   </div>
+    </section>
+</main>
+{% endblock %}
+
