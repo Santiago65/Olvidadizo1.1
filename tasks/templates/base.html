@@ -27,7 +27,7 @@
                
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/tasks/create/">Agregar Cumpleaños</a> 
+                    <a class="nav-link" href="{% url 'agregarCumple' %}">Agregar Cumpleaños</a> 
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/tasks/create/">Crear Tarea</a> 

@@ -4,9 +4,12 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
-from .models import Task
+from .models import Task, Cumples
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import *
+from .forms import *
 # Create your views here.
 
 
@@ -130,3 +133,25 @@ def signin(request):
         else:
             login(request, user)
             return redirect('tasks')
+        
+
+
+@login_required
+def agregarCumple(request):
+
+    if request.method == 'GET':
+        return render(request, 'agregarCumple.html', {
+            'form': CumpleForm
+        })
+    else:
+        try:
+            form = CumpleForm(request.POST)
+            new_cumple = form.save(commit=False)
+            new_cumple.user = request.user
+            new_cumple.save()
+            return redirect('tasks')
+        except ValueError:
+            return render(request, 'agregarCumple.html', {
+                'form': CumpleForm,
+                "error": 'Error al crear la tarea'
+            })
