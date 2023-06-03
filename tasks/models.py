@@ -16,8 +16,7 @@ class Task(models.Model):
 
 class Cumple(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    fecha = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-
+    fecha = models.DateField(max_length=200)
+    descripcion = models.CharField(max_length=255, default='Cumpleañero')
     def __str__(self):
-        return self.title + ' - by ' + self.user.username
+        return self.descripcion

@@ -150,8 +150,8 @@ def cumple(request):
     cumple_list = Cumple.objects.all()
     return render(request, 'cumple.html', {'cumple_list': cumple_list})
 
-@login_required
-def agregarCumple(request):
+#@login_required
+#def agregarCumple(request):
     if request.method == 'GET':
         return render(request, 'agregarCumple.html', {
             'form': CumpleForm()
@@ -177,4 +177,27 @@ def agregarCumple(request):
             return render(request, 'agregarCumple.html', {
                 'form': CumpleForm(),
                 'error': 'Error al crear la tarea'
+            })
+        
+@login_required
+def agregarCumple(request):
+    cumple_list = Cumple.objects.all()  # Obtener la lista de cumpleaños
+    
+    if request.method == 'GET':
+        return render(request, 'agregarCumple.html', {
+            'form': CumpleForm,
+            'cumple_list': cumple_list  # Pasar la lista de cumpleaños al contexto
+        })
+    else:
+        try:
+            form = CumpleForm(request.POST)
+            new_cumple = form.save(commit=False)
+            new_cumple.user = request.user
+            new_cumple.save()
+            return redirect('cumple')
+        except ValueError:
+            return render(request, 'agregarCumple.html', {
+                'form': CumpleForm,
+                'cumple_list': cumple_list,  # Pasar la lista de cumpleaños al contexto
+                "error": 'Error al crear la tarea'
             })

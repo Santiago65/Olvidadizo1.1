@@ -16,13 +16,30 @@ class TaskForm(forms.ModelForm):
         
 
     
+#class CumpleForm(forms.ModelForm):
+    #class Meta:
+        #model = Cumple
+        #fields = ['fecha', 'description']
+        #widgets = {
+            # 'fecha': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Escriba un titulo'}),
+             #'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder':'Cumpleañero'}),
+              
+        #}
+
+
+
 class CumpleForm(forms.ModelForm):
+    fecha = forms.DateField(
+        widget=forms.DateInput(attrs={'placeholder': 'Fecha', 'class': 'form-control'}),
+        help_text='Formato: DD/MM/AAAA'
+    )
+    descripcion = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Descripción', 'class': 'form-control'}),
+        initial='cumpleañero'
+    )
+
     class Meta:
         model = Cumple
-        fields = ['fecha', 'description']
-        widgets = {
-             'fecha': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Escriba un titulo'}),
-             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder':'Cumpleañero'}),
-              
-        }
+        fields = ('fecha', 'descripcion')
+
         
