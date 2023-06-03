@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
-from .models import Task, Cumple
+from .models import Task
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
+from django.contrib.auth.models import User
+from .models import Cumple
 # Create your views here.
 
 
@@ -140,29 +142,39 @@ def signin(request):
             return redirect('tasks')
 
 
-@login_required
-def cumple(request):
-    cumple = Cumple.objects.filter(
-        user=request.user, datecompleted__isnull=True)
-    return render(request, 'tasks.html', {'cumple': cumple})
 
+
+
+
+def cumple(request):
+    cumple_list = Cumple.objects.all()
+    return render(request, 'cumple.html', {'cumple_list': cumple_list})
 
 @login_required
 def agregarCumple(request):
-
     if request.method == 'GET':
         return render(request, 'agregarCumple.html', {
-            'form': CumpleForm
+            'form': CumpleForm()
         })
     else:
         try:
             form = CumpleForm(request.POST)
-            new_cumple = form.save(commit=False)
-            new_cumple.user = request.user
-            new_cumple.save()
-            return redirect('tasks')
+            if form.is_valid():
+                new_cumple = form.save(commit=False)
+                new_cumple.user = request.user
+                new_cumple.save()
+                cumple_data = {
+                    'fecha': new_cumple.fecha,
+                    'descripcion': new_cumple.description
+                }
+                return render(request, 'cumple.html', cumple_data)
+            else:
+                return render(request, 'agregarCumple.html', {
+                    'form': form,
+                    'error': 'Error al crear la tarea'
+                })
         except ValueError:
             return render(request, 'agregarCumple.html', {
-                'form': CumpleForm,
-                "error": 'Error al crear la tarea'
+                'form': CumpleForm(),
+                'error': 'Error al crear la tarea'
             })

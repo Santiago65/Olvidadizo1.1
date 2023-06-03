@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+{% block content%}
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="text-center display-3 py-5">Cumpleaños</h1>
+            {% if user.is_authenticated %}
+            <p>Bienvenido\a, {{ user.username }}.</p>
+            {% else %}
+            <button type="button" class="btn btn-outline-primary me-2">Iniciar Sesión</button>
+            {% endif %}
+
+{% if cumple_list %}
+<h1>Listado de Cumpleaños</h1>
+<ul>
+  {% for cumple in cumple_list %}
+    <li>{{ cumple.fecha }}</li>
+    <li>{{ cumple.nombre }}</li>
+    <!-- Mostrar otros datos de cumpleaños aquí -->
+  {% endfor %}
+</ul>
+{% else %}
+<h1>No hay cumpleaños registrados.</h1>
+{% endif %}
+</div>
+</div>
+</main>
+
+
+{% endblock %}
