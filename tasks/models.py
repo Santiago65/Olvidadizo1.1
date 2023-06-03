@@ -15,7 +15,7 @@ class Task (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class Cumples(models.Model): 
+class Cumple(models.Model): 
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     fecha = models.CharField(max_length=200)
     description = models.TextField(blank=True)

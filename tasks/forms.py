@@ -1,6 +1,6 @@
 from django import forms
 from .models import Task
-from .models import Cumples
+from .models import Cumple
 
 
 
@@ -18,7 +18,7 @@ class TaskForm(forms.ModelForm):
     
 class CumpleForm(forms.ModelForm):
     class Meta:
-        model = Cumples
+        model = Cumple
         fields = ['fecha', 'description']
         widgets = {
              'fecha': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Escriba un titulo'}),

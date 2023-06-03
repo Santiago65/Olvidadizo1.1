@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
-from .models import Task, Cumples
+from .models import Task, Cumple
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -45,18 +45,22 @@ def signup(request):
         'form': UserCreationForm
     })
 
+
 @login_required
 def tasks(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
 
     return render(request, 'tasks.html', {'tasks': tasks})
 
+
 @login_required
 def tasks_completed(request):
-    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).order_by
+    tasks = Task.objects.filter(
+        user=request.user, datecompleted__isnull=False).order_by
     ('-datecompleted')
 
     return render(request, 'tasks.html', {'tasks': tasks})
+
 
 @login_required
 def create_task(request):
@@ -77,6 +81,7 @@ def create_task(request):
                 'form': TaskForm,
                 "error": 'Error al crear la tarea'
             })
+
 
 @login_required
 def task_detail(request, task_id):
@@ -133,7 +138,13 @@ def signin(request):
         else:
             login(request, user)
             return redirect('tasks')
-        
+
+
+@login_required
+def cumple(request):
+    cumple = Cumple.objects.filter(
+        user=request.user, datecompleted__isnull=True)
+    return render(request, 'tasks.html', {'cumple': cumple})
 
 
 @login_required
