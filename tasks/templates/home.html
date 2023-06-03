@@ -21,6 +21,13 @@
 <br>
 <br>
 <br>
+{% if user.is_authenticated %}
+<div class="text-center">
+<h4>Bienvenido\a, {{ user.username }}.</h4>
+</div>
+{% else %}
+
+
    <div class="text-center">
     <a class="btn btn-primary" href="/signin/">
         Iniciar sesión
@@ -28,6 +35,7 @@
     <a class="btn btn-primary" href="/signup/">
         Registrarse
     </a>
+    {% endif %}
    </div>
    <br><br>
    <div class="container-fluid bg-primary">

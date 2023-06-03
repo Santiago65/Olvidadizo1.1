@@ -34,8 +34,8 @@ class CumpleForm(forms.ModelForm):
         help_text='Formato: DD/MM/AAAA'
     )
     descripcion = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Descripción', 'class': 'form-control'}),
-        initial='cumpleañero'
+        widget=forms.TextInput(attrs={'placeholder': 'Cumpleañero', 'class': 'form-control'}),
+        
     )
 
     class Meta:

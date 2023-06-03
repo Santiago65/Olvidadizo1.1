@@ -31,7 +31,7 @@ def signup(request):
                     username=request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
-                return redirect('tasks')
+                return redirect('home')
 
             except IntegrityError:
                 return render(request, 'signup.html', {
@@ -48,20 +48,35 @@ def signup(request):
     })
 
 
-@login_required
-def tasks(request):
+
+
+#@login_required
+#def tasks(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
 
     return render(request, 'tasks.html', {'tasks': tasks})
+#@login_required
+#def tasks(request):
+    pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
 
+    return render(request, 'tasks.html', {'completed_tasks': pending_tasks})
+@login_required
+def tasks(request):
+    pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
+
+    return render(request, 'tasks.html', {'pending_tasks': pending_tasks})
 
 @login_required
 def tasks_completed(request):
-    tasks = Task.objects.filter(
-        user=request.user, datecompleted__isnull=False).order_by
-    ('-datecompleted')
+    completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
+    pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
 
-    return render(request, 'tasks.html', {'tasks': tasks})
+    context = {
+        'completed_tasks': completed_tasks,
+        'pending_tasks': pending_tasks
+    }
+
+    return render(request, 'tasks.html', context)
 
 
 @login_required
@@ -139,7 +154,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('tasks')
+            return redirect('home')
 
 
 
@@ -150,35 +165,7 @@ def cumple(request):
     cumple_list = Cumple.objects.all()
     return render(request, 'cumple.html', {'cumple_list': cumple_list})
 
-#@login_required
-#def agregarCumple(request):
-    if request.method == 'GET':
-        return render(request, 'agregarCumple.html', {
-            'form': CumpleForm()
-        })
-    else:
-        try:
-            form = CumpleForm(request.POST)
-            if form.is_valid():
-                new_cumple = form.save(commit=False)
-                new_cumple.user = request.user
-                new_cumple.save()
-                cumple_data = {
-                    'fecha': new_cumple.fecha,
-                    'descripcion': new_cumple.description
-                }
-                return render(request, 'cumple.html', cumple_data)
-            else:
-                return render(request, 'agregarCumple.html', {
-                    'form': form,
-                    'error': 'Error al crear la tarea'
-                })
-        except ValueError:
-            return render(request, 'agregarCumple.html', {
-                'form': CumpleForm(),
-                'error': 'Error al crear la tarea'
-            })
-        
+
 @login_required
 def agregarCumple(request):
     cumple_list = Cumple.objects.all()  # Obtener la lista de cumpleaños
@@ -201,3 +188,4 @@ def agregarCumple(request):
                 'cumple_list': cumple_list,  # Pasar la lista de cumpleaños al contexto
                 "error": 'Error al crear la tarea'
             })
+        
