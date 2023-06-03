@@ -50,33 +50,16 @@ def signup(request):
 
 
 
-#@login_required
-#def tasks(request):
-    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
 
-    return render(request, 'tasks.html', {'tasks': tasks})
-#@login_required
-#def tasks(request):
-    pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
 
-    return render(request, 'tasks.html', {'completed_tasks': pending_tasks})
-@login_required
 def tasks(request):
     pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
-
     return render(request, 'tasks.html', {'pending_tasks': pending_tasks})
 
 @login_required
 def tasks_completed(request):
     completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
-    pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
-
-    context = {
-        'completed_tasks': completed_tasks,
-        'pending_tasks': pending_tasks
-    }
-
-    return render(request, 'tasks.html', context)
+    return render(request, 'tasks.html', {'completed_tasks': completed_tasks})
 
 
 @login_required
@@ -159,9 +142,12 @@ def signin(request):
 
 
 
-
-
 def cumple(request):
+    cumple_list = Cumple.objects.all()
+    return render(request, 'cumple.html', {'cumple_list': cumple_list})
+
+
+#def cumple(request):
     cumple_list = Cumple.objects.all()
     return render(request, 'cumple.html', {'cumple_list': cumple_list})
 

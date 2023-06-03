@@ -6,11 +6,6 @@
         <div class="col-md-6 offset-md-3">
             {% if completed_tasks %}
                 <h1 class="text-center display-3 py-5">Tareas Completadas</h1>
-                {% if user.is_authenticated %}
-                <h4>Bienvenido/a, {{ user.username }}.</h4>
-            {% else %}
-                <button type="button" class="btn btn-outline-primary me-2">Iniciar Sesión</button>
-            {% endif %}
                 <ul class="list-group">
                     {% for task in completed_tasks %}
                         <a class="list-group-item" href="{% url 'task_detail' task.id %}">
@@ -47,11 +42,14 @@
                 </ul>
             {% endif %}
             
-            {% if user.is_authenticated %}
-                <h4>Bienvenido/a, {{ user.username }}.</h4>
-            {% else %}
-                <button type="button" class="btn btn-outline-primary me-2">Iniciar Sesión</button>
-            {% endif %}
+            <div class="text-center mt-4">
+                <hr>
+                {% if user.is_authenticated %}
+                    <h4>Bienvenido/a, {{ user.username }}.</h4>
+                {% else %}
+                    <button type="button" class="btn btn-outline-primary me-2">Iniciar Sesión</button>
+                {% endif %}
+            </div>
         </div>
     </div>
 </main>
