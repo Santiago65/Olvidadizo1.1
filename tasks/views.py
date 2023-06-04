@@ -48,10 +48,6 @@ def signup(request):
     })
 
 
-
-
-
-
 def tasks(request):
     pending_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
     return render(request, 'tasks.html', {'pending_tasks': pending_tasks})
@@ -140,43 +136,6 @@ def signin(request):
             return redirect('home')
 
 
-
-
-#def cumple(request):
-    cumple_list = Cumple.objects.all()
-    return render(request, 'cumple.html', {'cumple_list': cumple_list})
-
-
-#def cumple(request):
-    cumple_list = Cumple.objects.all()
-    return render(request, 'cumple.html', {'cumple_list': cumple_list})
-
-
-#@login_required
-#def agregarCumple(request):
-    cumple_list = Cumple.objects.all()  # Obtener la lista de cumpleaños
-    
-    if request.method == 'GET':
-        return render(request, 'agregarCumple.html', {
-            'form': CumpleForm,
-            'cumple_list': cumple_list  # Pasar la lista de cumpleaños al contexto
-        })
-    else:
-        try:
-            form = CumpleForm(request.POST)
-            new_cumple = form.save(commit=False)
-            new_cumple.user = request.user
-            new_cumple.save()
-            return redirect('cumple')
-        except ValueError:
-            return render(request, 'agregarCumple.html', {
-                'form': CumpleForm,
-                'cumple_list': cumple_list,  # Pasar la lista de cumpleaños al contexto
-                "error": 'Error al crear la tarea'
-            })
-        
-
-
 @login_required
 def cumple(request):
     cumple_list = Cumple.objects.filter(user=request.user)  # Filtrar los cumpleaños por el usuario actual
@@ -205,3 +164,9 @@ def agregarCumple(request):
                 'cumple_list': cumple_list,
                 "error": 'Error al crear el cumpleaños'
             })
+@login_required
+def delete_cumple(request, cumple_id):
+    cumple = get_object_or_404(Cumple, pk=cumple_id, user=request.user)
+    if request.method == 'POST':
+        cumple.delete()
+        return redirect('cumple')
